@@ -4,6 +4,7 @@ using DG.Tweening;
 public class PlayerCollisions : MonoBehaviour
 {
     [SerializeField] private GameObject bloodParticles;
+    [SerializeField] private AudioSource soundEffect;
     private Animator playerAnim;
 
     private void Awake()
@@ -17,7 +18,7 @@ public class PlayerCollisions : MonoBehaviour
         {
             GameEvents.instance.playerSize.Value += 1;
             other.GetComponent<Collider>().enabled = false;
-            other.transform.DOScale(Vector3.zero, 0.5f).OnComplete(()=>
+            other.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
             {
                 Destroy(other.gameObject);
             });
@@ -33,6 +34,7 @@ public class PlayerCollisions : MonoBehaviour
         {
             GameEvents.instance.gameLost.SetValueAndForceNotify(true);
             bloodParticles.SetActive(true);
+            soundEffect.Play();
             GetComponent<Collider>().enabled = false;
         }
         if (other.tag == "Finish")
